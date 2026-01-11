@@ -169,102 +169,84 @@ No external services are required.
 
 ⸻
 
+## 📌 Sample API Requests
 
-⸻
-
-## Sample API Requests
-
-All APIs can be tested using the FastAPI Swagger UI available at:
+All APIs can be tested using **FastAPI Swagger UI** at:
 http://127.0.0.1:8000/docs
 
-You can also call the APIs directly using curl or any HTTP client.
+or via `curl` from the terminal.
 
-### Create an Event
-POST /events
+---
 
-This endpoint creates a new event and immediately triggers background processing.
+### Create an Event  
+**POST `/events`**
 
-Example request body (payment failure):
+Creates a new event and triggers background processing.
 
-{
-“event_type”: “payment_failed”,
-“payload”: {
-“amount”: 1500
-}
-}
-
-Example response:
+Request Body (example: payment failure)
 
 {
-“event_id”: “21a9b780-1015-46c4-8992-cf80d3ea44a0”,
-“status”: “queued”
+  "event_type": "payment_failed",
+  "payload": {
+    "amount": 1500
+  }
 }
 
-The API responds immediately while the event is processed asynchronously in the background.
+Response
+{
+  "event_id": "21a9b780-1015-46c4-8992-cf80d3ea44a0",
+  "status": "queued"
+}
 
-⸻
+The response is returned immediately while processing continues asynchronously in the background.
 
-### Get Event Status
-GET /events/{event_id}
 
-This endpoint returns the current status and details of a specific event.
+### 🔹 Get Event Status
+**GET /events/{event_id}**
 
-Example request:
+Fetches the current status and details of a specific event.
+
+Example Request
 GET /events/21a9b780-1015-46c4-8992-cf80d3ea44a0
 
-Example response after processing:
-
+Example Response (after processing)
 {
-“event_id”: “21a9b780-1015-46c4-8992-cf80d3ea44a0”,
-“event_type”: “payment_failed”,
-“status”: “completed”,
-“payload”: {
-“amount”: 1500
-},
-“error_message”: null
+  "event_id": "21a9b780-1015-46c4-8992-cf80d3ea44a0",
+  "event_type": "payment_failed",
+  "status": "completed",
+  "payload": {
+    "amount": 1500
+  },
+  "error_message": null
 }
 
-Possible event states include:
-queued, processing, completed, and failed.
 
-⸻
+### 🔹 List Recent Events
+**GET /events**
 
-### List Recent Events
-GET /events
+Returns a list of recently created events with their current status.
 
-This endpoint returns a list of recently created events along with their current status.
-
-Example response:
-
+Example Response
 [
-{
-“event_id”: “21a9b780-1015-46c4-8992-cf80d3ea44a0”,
-“event_type”: “payment_failed”,
-“status”: “completed”,
-“created_at”: “2026-01-10T08:30:00”
-},
-{
-“event_id”: “3f2a7d10-acde-4c89-9c63-acde12345678”,
-“event_type”: “sla_breach”,
-“status”: “processing”,
-“created_at”: “2026-01-10T08:28:12”
-}
+  {
+    "event_id": "21a9b780-1015-46c4-8992-cf80d3ea44a0",
+    "event_type": "payment_failed",
+    "status": "completed",
+    "created_at": "2026-01-10T08:30:00"
+  },
+  {
+    "event_id": "3f2a7d10-acde-4c89-9c63-acde12345678",
+    "event_type": "sla_breach",
+    "status": "processing",
+    "created_at": "2026-01-10T08:28:12"
+  }
 ]
 
-⸻
 
-# Future Scope
+# 📌 Phase Scope
 
 This repository currently implements Phase 1 only.
 
-Phase 1 focuses on:
-	•	Asynchronous event ingestion
-	•	Background processing
-	•	Rule-based classification
-	•	Event lifecycle tracking
-	•	Strong database integrity guarantees
-
 Future phases (optional):
-Phase 2 will introduce queues, retries, and idempotency handling in a local setup.
-Phase 3 will extend the same design to a cloud-based deployment.
-
+	•	Phase 2: Queues, retries, idempotency (local)
+	•	Phase 3: Cloud deployment (AWS)
