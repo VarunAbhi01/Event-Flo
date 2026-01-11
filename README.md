@@ -1,8 +1,3 @@
-setup this project in github
-preapre the gpt chat history to notes for reference 
-
-
-
 # EventFlo — Async Event Processing Backend
 
 EventFlo is a simple, interview-ready backend system that demonstrates how to design and build an asynchronous event-processing workflow using FastAPI and PostgreSQL.
