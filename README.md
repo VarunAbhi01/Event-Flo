@@ -1,8 +1,3 @@
-setup this project in github
-preapre the gpt chat history to notes for reference 
-
-
-
 # EventFlo — Async Event Processing Backend
 
 EventFlo is a simple, interview-ready backend system that demonstrates how to design and build an asynchronous event-processing workflow using FastAPI and PostgreSQL.
@@ -173,6 +168,82 @@ All functionality can be tested using:
 No external services are required.
 
 ⸻
+
+## 📌 Sample API Requests
+
+All APIs can be tested using **FastAPI Swagger UI** at:
+http://127.0.0.1:8000/docs
+
+or via `curl` from the terminal.
+
+---
+
+### Create an Event  
+**POST `/events`**
+
+Creates a new event and triggers background processing.
+
+Request Body (example: payment failure)
+
+```json
+{
+  "event_type": "payment_failed",
+  "payload": {
+    "amount": 1500
+  }
+}
+
+Response
+{
+  "event_id": "21a9b780-1015-46c4-8992-cf80d3ea44a0",
+  "status": "queued"
+}
+
+The response is returned immediately while processing continues asynchronously in the background.
+
+
+### 🔹 Get Event Status
+GET /events/{event_id}
+
+Fetches the current status and details of a specific event.
+
+Example Request
+GET /events/21a9b780-1015-46c4-8992-cf80d3ea44a0
+
+Example Response (after processing)
+{
+  "event_id": "21a9b780-1015-46c4-8992-cf80d3ea44a0",
+  "event_type": "payment_failed",
+  "status": "completed",
+  "payload": {
+    "amount": 1500
+  },
+  "error_message": null
+}
+
+
+### 🔹 List Recent Events
+
+GET /events
+
+Returns a list of recently created events with their current status.
+
+Example Response
+[
+  {
+    "event_id": "21a9b780-1015-46c4-8992-cf80d3ea44a0",
+    "event_type": "payment_failed",
+    "status": "completed",
+    "created_at": "2026-01-10T08:30:00"
+  },
+  {
+    "event_id": "3f2a7d10-acde-4c89-9c63-acde12345678",
+    "event_type": "sla_breach",
+    "status": "processing",
+    "created_at": "2026-01-10T08:28:12"
+  }
+]
+
 
 # 📌 Phase Scope
 
